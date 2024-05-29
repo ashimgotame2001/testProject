@@ -19,7 +19,6 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'clean install'
-    options: '-Xmx3072m'
     publishJUnitResults: true
     testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
   displayName: 'Run Maven Build'
