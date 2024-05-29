@@ -12,6 +12,20 @@ steps:
     echo "##vso[task.prependpath]$(Agent.ToolsDirectory)/jdk21/bin"
   displayName: 'Download and extract JDK 21'
 
+- script: |
+    MAVEN_VERSION=3.8.6
+    wget https://downloads.apache.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz
+    tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz -C /opt
+    ln -s /opt/apache-maven-$MAVEN_VERSION /opt/maven
+    echo "##vso[task.setvariable variable=M2_HOME]/opt/maven"
+    echo "##vso[task.setvariable variable=PATH]/opt/maven/bin:$(PATH)"
+    echo "Maven $MAVEN_VERSION installed"
+  displayName: 'Install Maven'
+
+- script: |
+    /opt/maven/bin/mvn -version
+  displayName: 'Verify Maven Installation'
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -19,7 +33,4 @@ steps:
     options: '-Xmx3072m'
     publishJUnitResults: true
     testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    jdkArchitectureOption: 'x64'
-    mavenVersionOption: 'Default'
   displayName: 'Run Maven Build'
