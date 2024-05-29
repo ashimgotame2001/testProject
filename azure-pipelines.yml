@@ -5,8 +5,9 @@ pool: 'Default'
 
 steps:
 - script: |
+    mkdir -p $(Agent.ToolsDirectory)/jdk21
     wget -c --header "Cookie: oraclelicense=accept-securebackup-cookie" -O jdk-21_linux-x64_bin.tar.gz https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz
-    tar -xzf jdk-21_linux-x64_bin.tar.gz -C $(Agent.ToolsDirectory)/jdk21
+    tar -xzf jdk-21_linux-x64_bin.tar.gz -C $(Agent.ToolsDirectory)/jdk21 --strip-components=1
   displayName: 'Download and extract JDK 21'
 
 - task: JavaToolInstaller@0
